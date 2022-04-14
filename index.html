@@ -129,7 +129,8 @@
         <!-- Open Contacto -->
         <section class="section-page section-contact">
             <h2 class="title-section">Cotizar</h2>
-            <form action="" class="form-landing-page" method="post">
+            <form id="formulario-contacto" action="" class="form-landing-page" method="post">
+                <ul id="errors"></ul>
                 <div class="input-field">
                     <input class="input-form" type="text" name="name_contact" required placeholder="Nombre y apellido">
                 </div>
@@ -140,7 +141,7 @@
                     <input class="input-form" type="number" name="phone_contact" required placeholder="Ingresa tu teléfono">
                 </div>
                 <div class="input-field">
-                    <select class="select-form" required>
+                    <select id="topic_contact" class="select-form" required>
                         <option value="html5">HTML5</option>
                         <option value="css3">CSS3</option>
                         <option value="javascript">Javascript</option>
@@ -161,6 +162,7 @@
     </footer>
     <!-- End Footer -->
 
+    <script src="js/index.js"></script>
     <!-- HTML5 DESDE CERO | César Avilés | https://github.com/grafiaviles/master-class-escalab-landing-page -->
 </body>
 
