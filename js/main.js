@@ -6,42 +6,41 @@ const btnSubmit = d.querySelector(".btn-enviar");
 const fullName = d.getElementsByName("name_contact")[0];
 const email = d.getElementsByName("email_contact")[0];
 const phoneNumber = d.getElementsByName("phone_contact")[0];
-// const topic = d.getElementById("topic_contact");
+const topic = d.getElementById("topic_contact");
+const topicArray = ["html5", "css3", "javascript", "github"];
 const comment = d.getElementsByName("commit_contact")[0];
 
 const errorsList = d.getElementById("errors");
 
-// *** navbar links with smooth scroll
+// *** FIXME: navbar links with smooth scroll only works if comment all from line 43
 d.addEventListener("DOMContentLoaded", () => {
   // get all the links with an ID that starts with 'sectionLink'
-  const listOfLinks = document.querySelectorAll(".main-menu ul a");
+  const listOfLinks = d.querySelectorAll(".main-menu ul a");
   // loop over all the links
   listOfLinks.forEach(function (link) {
     // listen for a click
-    link.addEventListener('click',  () => {
-      console.log("hola")
+    link.addEventListener("click", () => {
+      console.log("hola");
       // toggle highlight on and off when we click a link
-      listOfLinks.forEach( (link) => {
-        if (link.classList.contains('highlighted')) {
-          link.classList.remove('highlighted');
+      listOfLinks.forEach((link) => {
+        if (link.classList.contains("highlighted")) {
+          link.classList.remove("highlighted");
         }
       });
-      link.classList.add('highlighted');
+      link.classList.add("highlighted");
       // get the element where to scroll
-      let ref = link.href.value
+      let ref = link.href.value;
       window.scroll({
-        behavior: 'smooth',
+        behavior: "smooth",
         left: 0,
         // top gets the distance from the top of the page of our target element
-        top: document.querySelector(ref).offsetTop
-      })
-    })
-  })
-})
+        top: d.querySelector(ref).offsetTop,
+      });
+    });
+  });
+});
 
-
-
-
+// *** Form functions
 function showError(element, message) {
   element.classList.toggle("error");
   errorsList.innerHTML += `<li>${message}</li>`;
@@ -62,8 +61,23 @@ ESTRUCTURA BODY: {
 	"comment": ""
 }
 */
+
+// *** Send data to API with fetch, according to comment above
+const URLapi = "https://30kd6edtfc.execute-api.us-east-1.amazonaws.com/prod/send-email";
+
 async function sendMail(name, email, phone, select, comment) {
-  // TODO: Enviar datos a API usando fetch, siguiendo la estructura indicada
+  const rawRes = await fetch(URLapi, {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name, email, phone, select, comment
+    })
+  });
+  const content = await rawRes.json();
+  console.log(content)
 }
 
 /*
@@ -75,21 +89,21 @@ Validaciones necesarias:
 + Campo comentario debe tener al menos 20 caracteres
 */
 // Desafío opcional: qué elemento y evento podríamos usar para detectar si el usuario apreta Enter en vez de hacer click?
+
+// *** button submit trigger by click event (pend add enter event) previous form validations
 btnSubmit.addEventListener("click", (event) => {
   event.preventDefault();
   cleanErrors();
   let hasErrors = false;
 
+  // *********  form validations *********
+
   // *** full name validation
-  // ^[a-zA-Z\u00C0-\u017F]{2,20}[a-z A-Z\u00C0-\u017F]{2,20}(\s+[^\s]+)$ cumple lo pedido al menos un espacio entremedio (no al principio ni end), acentos, ñ, no dígitos
-  // ^[a-zA-Z\u00C0-\u017F]{2,15}[a-z A-Z\u00C0-\u017F]{2,15}(\s+[^\s]+)*$ acepta acentos, espacios sólo entremedio. Pero puede no haber ningún espacio(mal)
-  // ^[\u00F1A-Za-z _]*[\u00F1A-Za-z][\u00F1A-Za-z _]*$  acepta más de un espacio pero no acentos
-  const fullNameRe = /^[a-zA-Z\u00C0-\u017F]{2,20}[a-z A-Z\u00C0-\u017F]{2,20}(\s+[^\s]+)$/;
-  const sanitizedName = fullName.value.trim();
-  // const sanitizedName = fullName.value.replace(" ", "");
-  
-  if (!fullNameRe.exec(sanitizedName)) {
-  // if (!fullNameRe.exec(fullName.value)) {
+  const fullNameRe =
+    /^[a-zA-Z\u00C0-\u017F]{2,20}[a-z A-Z\u00C0-\u017F]{2,20}(\s+[^\s]+)$/;
+  const trimmedName = fullName.value.trim();
+
+  if (!fullNameRe.exec(trimmedName)) {
     showError(fullName, "El nombre debe seguir un formato válido.");
     hasErrors = true;
   }
@@ -101,23 +115,38 @@ btnSubmit.addEventListener("click", (event) => {
     hasErrors = true;
   }
 
-// *** phone number validation
+  // *** phone number validation
   const phoneNumberRe = /^\+?\d{7,15}$/;
   const sanitizedPhone = String(phoneNumber.value.replace(" ", ""));
 
   if (!phoneNumberRe.exec(sanitizedPhone)) {
-    showError(phoneNumber, "Número de teléfono debe tener entre 7 y 15 dígitos.");
+    showError(
+      phoneNumber,
+      "Número de teléfono debe tener entre 7 y 15 dígitos."
+    );
     hasErrors = true;
   }
 
-// *** comment validation
-  if (comment.value.length < 20 || comment.value.length > 200) {
-    showError(comment, "Comentario debe tener entre 20 y 200 caracteres.");
+  // *** topic validation (option value sanitized, avoiding malicious manipulation from inspector)
+  if (!topicArray.includes(topic.value)) {
+    console.log(topic.value);
+    showError(topic, "Selección no existe");
+    hasErrors = true;
+  }
+  // *** comment validation
+  const trimmedComment = comment.value.trim();
+  console.log(comment.value.length);
+  if (trimmedComment.length < 20 || trimmedComment.length > 200) {
+    showError(
+      comment,
+      `Comentario debe tener entre 20 y 200 caracteres. Su comentario tiene ${trimmedComment.length} caracteres.`
+    );
     hasErrors = true;
   }
 
-  // TODO: Enviar consulta a API en caso de que el formulario esté correcto
+  // *** If no errors (pass all form validations) call this function to send params
   if (!hasErrors) {
-    console.log("formulario enviado (con datos validados x front)")
+    sendMail(trimmedName, email.value, sanitizedPhone, topic.value, trimmedComment);
+    console.log("formulario enviado (con datos validados x front)");
   }
 });
