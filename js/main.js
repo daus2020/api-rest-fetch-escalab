@@ -1,44 +1,44 @@
 const d = document;
 
 const contactForm = d.querySelector("#formulario-contacto");
-const btnSubmit = d.querySelector(".btn-enviar");
+const btnSubmit = d.getElementById("btnSubmit");
+// const btnSubmit = d.querySelector(".btn-enviar");
 
-const fullName = d.getElementsByName("name_contact")[0];
-const email = d.getElementsByName("email_contact")[0];
-const phoneNumber = d.getElementsByName("phone_contact")[0];
+const fullName = d.getElementById("fullName");
+const email = d.getElementById("email");
+const phoneNumber = d.getElementById("phoneNumber");
 const topic = d.getElementById("topic_contact");
 const topicArray = ["html5", "css3", "javascript", "github"];
-const comment = d.getElementsByName("commit_contact")[0];
+const comment = d.getElementById("comment");
 
 const errorsList = d.getElementById("errors");
 
 // *** FIXME: navbar links with smooth scroll only works if comment all from line 43
-d.addEventListener("DOMContentLoaded", () => {
-  // get all the links with an ID that starts with 'sectionLink'
-  const listOfLinks = d.querySelectorAll(".main-menu ul a");
-  // loop over all the links
-  listOfLinks.forEach(function (link) {
-    // listen for a click
-    link.addEventListener("click", () => {
-      console.log("hola");
-      // toggle highlight on and off when we click a link
-      listOfLinks.forEach((link) => {
-        if (link.classList.contains("highlighted")) {
-          link.classList.remove("highlighted");
-        }
-      });
-      link.classList.add("highlighted");
-      // get the element where to scroll
-      let ref = link.href.value;
-      window.scroll({
-        behavior: "smooth",
-        left: 0,
-        // top gets the distance from the top of the page of our target element
-        top: d.querySelector(ref).offsetTop,
-      });
-    });
-  });
-});
+// d.addEventListener("DOMContentLoaded", () => {
+//   // get all the links with an ID that starts with 'sectionLink'
+//   const listOfLinks = d.querySelectorAll(".main-menu ul a");
+//   // loop over all the links
+//   listOfLinks.forEach(function (link) {
+//     // listen for a click
+//     link.addEventListener("click", () => {
+//       // toggle highlight on and off when we click a link
+//       listOfLinks.forEach((link) => {
+//         if (link.classList.contains("highlighted")) {
+//           link.classList.remove("highlighted");
+//         }
+//       });
+//       link.classList.add("highlighted");
+//       // get the element where to scroll
+//       let ref = link.href.value;
+//       window.scroll({
+//         behavior: "smooth",
+//         left: 0,
+//         // top gets the distance from the top of the page of our target element
+//         top: d.querySelector(ref).offsetTop,
+//       });
+//     });
+//   });
+// });
 
 // *** Form functions
 function showError(element, message) {
@@ -63,21 +63,26 @@ ESTRUCTURA BODY: {
 */
 
 // *** Send data to API with fetch, according to comment above
-const URLapi = "https://30kd6edtfc.execute-api.us-east-1.amazonaws.com/prod/send-email";
+const URLapi =
+  "https://30kd6edtfc.execute-api.us-east-1.amazonaws.com/prod/send-email";
 
 async function sendMail(name, email, phone, select, comment) {
   const rawRes = await fetch(URLapi, {
     method: "POST",
     headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json"
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name, email, phone, select, comment
-    })
+      name,
+      email,
+      phone,
+      select,
+      comment,
+    }),
   });
   const content = await rawRes.json();
-  console.log(content)
+  console.log(content);
 }
 
 /*
@@ -90,9 +95,22 @@ Validaciones necesarias:
 */
 // Desafío opcional: qué elemento y evento podríamos usar para detectar si el usuario apreta Enter en vez de hacer click?
 
+// *** detect press 'enter' key instead of 'click' attempting to submit the form (only inside form fields)
+contactForm.addEventListener("keyup", e => {
+// btnSubmit.addEventListener("keyup", e => {
+  // e.preventDefault();
+  console.log(e.key)
+  if (e.key === "Enter") {
+    console.log(`Usuario usó la tecla '${e.key}' para intentar enviar el formulario`);
+  }
+  if (e.key === "Enter" && !hasErrors) {
+    console.log(`Usuario usó la tecla '${e.key}' para enviar el formulario`);
+  }
+});
+
 // *** button submit trigger by click event (pend add enter event) previous form validations
-btnSubmit.addEventListener("click", (event) => {
-  event.preventDefault();
+btnSubmit.addEventListener("click", e => {
+  e.preventDefault();
   cleanErrors();
   let hasErrors = false;
 
@@ -135,7 +153,6 @@ btnSubmit.addEventListener("click", (event) => {
   }
   // *** comment validation
   const trimmedComment = comment.value.trim();
-  console.log(comment.value.length);
   if (trimmedComment.length < 20 || trimmedComment.length > 200) {
     showError(
       comment,
@@ -146,7 +163,13 @@ btnSubmit.addEventListener("click", (event) => {
 
   // *** If no errors (pass all form validations) call this function to send params
   if (!hasErrors) {
-    sendMail(trimmedName, email.value, sanitizedPhone, topic.value, trimmedComment);
-    console.log("formulario enviado (con datos validados x front)");
+    sendMail(
+      trimmedName,
+      email.value,
+      sanitizedPhone,
+      topic.value,
+      trimmedComment
+    );
+    console.log("form sent to server with front validations");
   }
 });

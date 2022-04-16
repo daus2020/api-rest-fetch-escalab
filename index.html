@@ -223,6 +223,7 @@
           <div class="input-field">
             <input
               class="input-form"
+              id="fullName"
               type="text"
               name="name_contact"
               required
@@ -232,6 +233,7 @@
           <div class="input-field">
             <input
               class="input-form"
+              id="email"
               type="email"
               name="email_contact"
               required
@@ -241,6 +243,7 @@
           <div class="input-field">
             <input
               class="input-form"
+              id="phoneNumber"
               type="number"
               name="phone_contact"
               required
@@ -249,6 +252,7 @@
           </div>
           <div class="input-field">
             <select id="topic_contact" class="select-form" required>
+              <option value="">Seleccione una tecnología</option>
               <option value="html5">HTML5</option>
               <option value="css3">CSS3</option>
               <option value="javascript">Javascript</option>
@@ -258,6 +262,7 @@
           <div class="input-field">
             <textarea
               class="textarea-form"
+              id="comment"
               name="commit_contact"
               cols="30"
               rows="10"
@@ -268,9 +273,11 @@
           </div>
           <button
             class="btns btn-enviar"
+            id="btnSubmit"
+            formmethod="post"
             type="submit"
-            value="submit"
             name="btn_enviar"
+            
           >
             Enviar y cotizar
           </button>
