@@ -97,18 +97,12 @@ Validaciones necesarias:
 
 // *** detect press 'enter' key instead of 'click' attempting to submit the form (only inside form fields)
 contactForm.addEventListener("keyup", e => {
-// btnSubmit.addEventListener("keyup", e => {
-  // e.preventDefault();
-  console.log(e.key)
   if (e.key === "Enter") {
-    console.log(`Usuario usó la tecla '${e.key}' para intentar enviar el formulario`);
-  }
-  if (e.key === "Enter" && !hasErrors) {
-    console.log(`Usuario usó la tecla '${e.key}' para enviar el formulario`);
+    console.log(`Usuario usó la tecla '${e.key}'`);
   }
 });
 
-// *** button submit trigger by click event (pend add enter event) previous form validations
+// *** button submit trigger by 'click' event
 btnSubmit.addEventListener("click", e => {
   e.preventDefault();
   cleanErrors();
@@ -147,7 +141,6 @@ btnSubmit.addEventListener("click", e => {
 
   // *** topic validation (option value sanitized, avoiding malicious manipulation from inspector)
   if (!topicArray.includes(topic.value)) {
-    console.log(topic.value);
     showError(topic, "Selección no existe");
     hasErrors = true;
   }
