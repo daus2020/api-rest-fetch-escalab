@@ -83,6 +83,12 @@ async function sendMail(name, email, phone, select, comment) {
   });
   const content = await rawRes.json();
   console.log(content);
+
+  if (Object.keys(content.errors).length === 0) {
+    alert("Mensaje enviado correctamente");
+  } else {
+    alert("Error al enviar el mensaje");
+  }
 }
 
 /*
@@ -95,7 +101,8 @@ Validaciones necesarias:
 */
 // Desafío opcional: qué elemento y evento podríamos usar para detectar si el usuario apreta Enter en vez de hacer click?
 
-// *** detect press 'enter' key instead of 'click' attempting to submit the form (only inside form fields)
+// *** detect press 'enter' key instead of 'click' to submit the form (only inside form fields)
+// *** FIXME: also detects when press 'enter' key in comment field
 contactForm.addEventListener("keyup", e => {
   if (e.key === "Enter") {
     console.log(`Usuario usó la tecla '${e.key}'`);
@@ -156,6 +163,7 @@ btnSubmit.addEventListener("click", e => {
 
   // *** If no errors (pass all form validations) call this function to send params
   if (!hasErrors) {
+    cleanErrors();
     sendMail(
       trimmedName,
       email.value,
