@@ -380,17 +380,16 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 #errors {
-  padding: .2rem 2rem;
+  padding: 0.2rem 2rem;
   display: inline-block;
   align-items: center;
   width: 696px;
-  margin-bottom: .5rem;
-
+  margin-bottom: 0.5rem;
 }
 
-li{
+li {
   text-align: left;
-  color:red;
+  color: red;
 }
 
 input.error,
@@ -402,7 +401,7 @@ select.error {
 }
 
 textarea.textarea-form {
-  min-height: 150px;
+  min-height: 100px;
   width: 634px;
   padding: 0 2rem;
 }
@@ -414,6 +413,13 @@ select.select-form {
   background-position: right 10px top 50%;
   background-repeat: no-repeat;
   background-image: url(../images/chevron-down.svg);
+}
+
+label {
+  display: block;
+  text-align: start;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 ::-webkit-input-placeholder {
