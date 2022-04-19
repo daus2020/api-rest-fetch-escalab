@@ -19,6 +19,7 @@
     />
     <link rel="stylesheet" href="css/normalize-dist.css" />
     <link rel="stylesheet" href="css/style-dist.css" />
+    <link rel="stylesheet" href="css/style.css">
   </head>
 
   <body>
@@ -213,6 +214,7 @@
       <!-- Open Contacto -->
       <section class="section-page section-contact" id="contact">
         <h2 class="title-section">Cotizar</h2>
+        <ul id="errors"></ul>
         <form
           id="formulario-contacto"
           name="fmr-contacto"
@@ -220,7 +222,7 @@
           class="form-landing-page"
           method="POST"
         >
-          <ul id="errors"></ul>
+          
           <div class="input-field">
             <input
               class="input-form"
@@ -253,7 +255,7 @@
           </div>
           <div class="input-field">
             <select id="topic_contact" class="select-form" required>
-              <option value="">Seleccione una tecnología</option>
+              <option value="">Selecciona tu interés</option>
               <option value="html5">HTML5</option>
               <option value="css3">CSS3</option>
               <option value="javascript">Javascript</option>

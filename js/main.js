@@ -148,7 +148,7 @@ btnSubmit.addEventListener("click", e => {
 
   // *** topic validation (option value sanitized, avoiding malicious manipulation from inspector)
   if (!topicArray.includes(topic.value)) {
-    showError(topic, "Selección no existe");
+    showError(topic, "Selecciona tu interés.");
     hasErrors = true;
   }
   // *** comment validation
@@ -156,7 +156,7 @@ btnSubmit.addEventListener("click", e => {
   if (trimmedComment.length < 20 || trimmedComment.length > 200) {
     showError(
       comment,
-      `Comentario debe tener entre 20 y 200 caracteres. Su comentario tiene ${trimmedComment.length} caracteres.`
+      `Mensaje debe tener 20 a 200 caracteres (tiene ${trimmedComment.length}).`
     );
     hasErrors = true;
   }
