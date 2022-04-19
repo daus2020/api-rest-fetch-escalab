@@ -135,7 +135,7 @@ btnSubmit.addEventListener("click", e => {
 
   // *** full name validation
   const fullNameRe =
-    /^[a-zA-Z\u00C0-\u017F]{2,20}[a-z A-Z\u00C0-\u017F]{2,20}(\s+[^\s]+)$/;
+    /^[a-zA-Z\u00C0-\u017F]{1,20}[a-z A-Z\u00C0-\u017F]{1,20}(\s+[^\s]+)$/;
   const trimmedName = fullName.value.trim();
 
   if (!fullNameRe.exec(trimmedName)) {
