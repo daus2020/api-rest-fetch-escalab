@@ -7,9 +7,12 @@ const btnSubmit = d.getElementById("btnSubmit");
 const fullName = d.getElementById("fullName");
 const email = d.getElementById("email");
 const phoneNumber = d.getElementById("phoneNumber");
+
 const topic = d.getElementById("topic_contact");
 const topicArray = ["html5", "css3", "javascript", "github"];
+
 const comment = d.getElementById("comment");
+let input = d.querySelectorAll("textarea")[0];
 
 const errorsList = d.getElementById("errors");
 
@@ -48,8 +51,18 @@ function showError(element, message) {
 
 function cleanErrors() {
   errorsList.innerHTML = "";
+  fullName.classList.remove("error");
+  email.classList.remove("error");
+  phoneNumber.classList.remove("error");
+  topic.classList.remove("error");
+  comment.classList.remove("error");
 }
 
+let charactersCounter = d.getElementById("charactersCounter");
+comment.addEventListener("keyup", function() {
+  charactersCounter.innerHTML = `${comment.value.trim().length} / 20-200`;
+  console.log(comment.value.length);
+})
 /*
 URL API: https://30kd6edtfc.execute-api.us-east-1.amazonaws.com/prod/send-email
 METHOD: POST

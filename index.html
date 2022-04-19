@@ -214,7 +214,7 @@
       <!-- Open Contacto -->
       <section class="section-page section-contact" id="contact">
         <h2 class="title-section">Cotizar</h2>
-        <ul id="errors"></ul>
+        <ul class="errors" id="errors"></ul>
         <form
           id="formulario-contacto"
           name="fmr-contacto"
@@ -273,6 +273,7 @@
               minlength="20"
               maxlength="200"
             ></textarea>
+            <div>Characters: <span id="charactersCounter"></span></div>
           </div>
           <button
             class="btns btn-enviar"

@@ -364,7 +364,6 @@ textarea {
   border-radius: 5px;
   box-shadow: none;
   transition: 0.4s all;
-  border: none;
   border: 1px solid #9c9c9c;
   -webkit-appearance: none;
 }
@@ -404,7 +403,7 @@ select.error {
 
 textarea.textarea-form {
   min-height: 150px;
-  width: 630px;
+  width: 634px;
   padding: 0 2rem;
 }
 
