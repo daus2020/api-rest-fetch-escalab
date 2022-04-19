@@ -16,6 +16,8 @@ let input = d.querySelectorAll("textarea")[0];
 
 const errorsList = d.getElementById("errors");
 
+const inputsForm = d.getElementsByClassName("input-form");
+
 // *** FIXME: navbar links with smooth scroll only works if comment all from line 43
 // d.addEventListener("DOMContentLoaded", () => {
 //   // get all the links with an ID that starts with 'sectionLink'
@@ -61,7 +63,7 @@ function cleanErrors() {
 let charactersCounter = d.getElementById("charactersCounter");
 comment.addEventListener("keyup", function() {
   charactersCounter.innerHTML = `${comment.value.trim().length} / 20-200`;
-  console.log(comment.value.length);
+  // console.log(comment.value.length);
 })
 /*
 URL API: https://30kd6edtfc.execute-api.us-east-1.amazonaws.com/prod/send-email
@@ -75,7 +77,7 @@ ESTRUCTURA BODY: {
 }
 */
 
-// *** Send data to API with fetch, according to comment above
+// *** Send data to API with fetch, according to structure above
 const URLapi =
   "https://30kd6edtfc.execute-api.us-east-1.amazonaws.com/prod/send-email";
 
@@ -116,6 +118,7 @@ Validaciones necesarias:
 
 // *** detect press 'enter' key instead of 'click' to submit the form (only inside form fields)
 // *** FIXME: also detects when press 'enter' key in comment field
+// inputsForm.addEventListener("keyup", e => { doesn't work :(
 contactForm.addEventListener("keyup", e => {
   if (e.key === "Enter") {
     console.log(`Usuario usó la tecla '${e.key}'`);
@@ -148,10 +151,13 @@ btnSubmit.addEventListener("click", e => {
   }
 
   // *** phone number validation
-  const phoneNumberRe = /^\+?\d{7,15}$/;
-  const sanitizedPhone = String(phoneNumber.value.replace(" ", ""));
+  const phoneNumberRe = /^\+?[\d]{7,15}$/;
+  // const phoneNumberRe = /^\+?\d{7,15}$/;
+  // const sanitizedPhone = phoneNumber.value.replace(" ", "");
+  // const sanitizedPhone = String(phoneNumber.value.replace(" ", ""));
 
-  if (!phoneNumberRe.exec(sanitizedPhone)) {
+  if (!phoneNumberRe.exec(phoneNumber.value)) {
+  // if (!phoneNumberRe.exec(sanitizedPhone)) {
     showError(
       phoneNumber,
       "Número de teléfono debe tener entre 7 y 15 dígitos."
@@ -180,7 +186,7 @@ btnSubmit.addEventListener("click", e => {
     sendMail(
       trimmedName,
       email.value,
-      sanitizedPhone,
+      phoneNumber.value,
       topic.value,
       trimmedComment
     );
